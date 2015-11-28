@@ -1,0 +1,13 @@
+@import '../atoms/recipe-item';
+
+@mixin gen-list {
+  list-style: none;
+}
+
+.recipe-list {
+  @include gen-list;
+}
+
+.ingredients-list {
+  @include gen-list
+}

@@ -14,15 +14,19 @@ const RecipeDetails = createClass({
     },
 
     init() {
-        const { nameOf } = this.props.params;
-        this.ref = new Firebase('https://vegan-reipes.firebaseio.com/listOfRecipes/');
-        const childRef = this.ref.child(nameOf);
+        const { index } = this.props.params;
+        this.ref = new Firebase('https://vegan-recipes.firebaseio.com/listOfRecipes/');
+        const childRef = this.ref.child(index);
         this.bindAsObject(childRef, 'recipe');
     },
 
     componentWillMount() {
         this.init();
     },
+
+    // componentWillUnmount() {
+    //     this.unbind('recipe');
+    // },
 
 
     render() {
@@ -34,12 +38,11 @@ const RecipeDetails = createClass({
                         </li>;
             });
         }
-        console.log('11111', JSON.stringify(this.state.recipe, null, 4));
         return (
-            <div >
+            <div className="col span_8_of_8">
                 <h3> Name: {this.state.recipe.name} </h3>
-                <ul>
-                    {ingredients}
+                <ul className="ingredients-list">
+                {ingredients}
 
                 </ul>
             </div>

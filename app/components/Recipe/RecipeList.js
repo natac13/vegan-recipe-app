@@ -15,25 +15,37 @@ const RecipeList = createClass({
     },
 
     init() {
-        this.ref = new Firebase('https://vegan-reipes.firebaseio.com/');
+        this.ref = new Firebase('https://vegan-recipes.firebaseio.com/');
         const childRef = this.ref.child('listOfRecipes');
         this.bindAsArray(childRef, 'recipes');
     },
 
-    componentDidMount() {
+    componentWillMount() {
         this.init();
     },
 
+    // componentWillUnmount() {
+    //     this.unbind('recipes');
+    // },
+
     render() {
         let recipes = this.state.recipes.map((recipe, index) => {
-            return <li key={index}><Link to={`recipes/${index}`}>{recipe.name}</Link></li>;
+            return <ListItem key={index} data={recipe} index={index}/>
         });
         return (
-            <ul >
+            <ul className="col span_4_of_8 recipe-list">
                 {recipes}
             </ul>
         );
     }
 });
+
+const ListItem = (props) => {
+    return (
+        <li className="recipe-item">
+            <Link to={`recipes/${props.index}`}>{props.data.name}</Link>
+        </li>
+    )
+};
 
 export default RecipeList;
