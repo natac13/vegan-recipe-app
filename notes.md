@@ -8,3 +8,6 @@ cp ~/Documents/GitForkedRepos/SassVerticalRhythm/vertical-rhythm app/scss/_VRmix
 ToDo 
 
 Need to get the details of the recipes working.
+
+
+Pictures and url in the json data.
