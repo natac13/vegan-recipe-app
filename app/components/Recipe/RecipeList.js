@@ -30,7 +30,8 @@ const RecipeList = createClass({
 
     render() {
         let recipes = this.state.recipes.map((recipe, index) => {
-            return <ListItem key={index} data={recipe} index={index}/>
+            console.log(recipe);
+            return <ListItem key={index} data={recipe} location={recipe['.key']}/>
         });
         return (
             <ul className="col span_4_of_8 recipe-list">
@@ -43,7 +44,7 @@ const RecipeList = createClass({
 const ListItem = (props) => {
     return (
         <li className="recipe-item">
-            <Link to={`recipes/${props.index}`}>{props.data.name}</Link>
+            <Link to={`recipes/${props.location}`}>{props.data.name}</Link>
         </li>
     )
 };
