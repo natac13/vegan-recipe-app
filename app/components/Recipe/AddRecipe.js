@@ -3,6 +3,10 @@ import Firebase       from 'firebase';
 import ReactFireMixin from 'reactfire';
 import moment         from 'moment';
 
+/*** Components ***/
+import RecipeInput    from './RecipeInput';
+
+
 const AddRecipe = createClass({
     mixins: [ReactFireMixin],
 
@@ -15,7 +19,7 @@ const AddRecipe = createClass({
     },
 
     init() {
-
+        this.ref = new Firebase('https://vegan-recipes.firebaseio.com/listOfRecipes');
     },
 
     componentWillMount() {
@@ -25,15 +29,15 @@ const AddRecipe = createClass({
     update(event) {
         let { value, className: property } = event.target;
         // the className will be the same as the property of the state I want to
-        // update
-        value = this.changeValueFormat(property, value);
+        // update, so grabbing the className 'as' property
+        value = this.changeFormat(property, value);
         this.setState({
             [property]: value
         });
         console.log(JSON.stringify(this.state, null, 4));
     },
 
-    changeValueFormat(property, value) {
+    changeFormat(property, value) {
         if(property === 'directions') {
             return value.split(',')
         }
@@ -52,16 +56,12 @@ const AddRecipe = createClass({
     },
 
     makeDate() {
-        return moment().format('MMMM YYYY');
+        return moment().format('MMMM Do, YYYY');
     },
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log('before');
-        this.ref = new Firebase('https://vegan-recipes.firebaseio.com/');
-        const childRef = this.ref.child('listOfRecipes');
         // create the recipe object from data
-        console.log('after');
         let created = this.makeDate();
         let { name, directions, ingredients } = this.state;
         let obj = {
@@ -71,8 +71,9 @@ const AddRecipe = createClass({
             directions
         }
         // send to Firebase
-        childRef.push(obj)
-
+        this.ref.push(obj);
+        // change to the list view
+        this.props.history.pushState(null, '/recipes');
 
     },
 
@@ -80,22 +81,15 @@ const AddRecipe = createClass({
         return (
             <div>
                 <form role="form" onSubmit={this.handleSubmit}>
-                    <label>Name</label>
-                    <input type="text" ref="name" className="name" onChange={this.update}/>
-                    <label>Directions</label>
-                    <textarea ref="directions" className="directions" onChange={this.update}>
-                    </textarea>
-                    <label>Ingredients</label>
-                    <textarea ref="ingredients" className="ingredients" onChange={this.update}>
-                    </textarea>
-                    <label>Created</label>
-                    <input type="text" ref="created" readOnly="readOnly" value={this.makeDate()}/>
+                    <RecipeInput name="name" update={this.update} />
+                    <RecipeInput name="directions" update={this.update} />
+                    <RecipeInput name="ingredients" update={this.update} />
                     <button type="submit" value="submit"> submit</button>
 
                 </form>
                 <pre>
                     {this.state.name}
-
+{/*Add in a preview of the recipe to be submitted*/}
                 </pre>
 
             </div>

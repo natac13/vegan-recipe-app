@@ -11,3 +11,5 @@ Need to get the details of the recipes working.
 
 
 Pictures and url in the json data.
+
+add in a preview of the recipe input

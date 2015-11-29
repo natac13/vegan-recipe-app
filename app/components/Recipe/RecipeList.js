@@ -29,9 +29,9 @@ const RecipeList = createClass({
     // },
 
     render() {
-        let recipes = this.state.recipes.map((recipe, index) => {
-            console.log(recipe);
-            return <ListItem key={index} data={recipe} location={recipe['.key']}/>
+        let recipes = this.state.recipes.map((recipe) => {
+            const key = recipe['.key'];
+            return <ListItem key={key} data={recipe} location={key}/>
         });
         return (
             <ul className="col span_4_of_8 recipe-list">
