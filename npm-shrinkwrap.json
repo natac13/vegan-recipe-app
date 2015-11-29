@@ -1,6 +1,6 @@
 {
   "name": "natac-recipe-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
@@ -1826,7 +1826,7 @@
     },
     "lodash": {
       "version": "3.10.1",
-      "from": "lodash@>=3.2.0 <4.0.0",
+      "from": "lodash@*",
       "resolved": "https://registry.npmjs.org/lodash/-/lodash-3.10.1.tgz"
     },
     "lodash._baseassign": {

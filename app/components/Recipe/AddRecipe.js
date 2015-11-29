@@ -3,6 +3,9 @@ import Firebase       from 'firebase';
 import ReactFireMixin from 'reactfire';
 import moment         from 'moment';
 
+/*** helper ***/
+import _ from 'lodash';
+
 /*** Components ***/
 import RecipeInput    from './RecipeInput';
 
@@ -27,7 +30,7 @@ const AddRecipe = createClass({
     },
 
     update(event) {
-        let { value, className: property } = event.target;
+        let { value, id: property } = event.target;
         // the className will be the same as the property of the state I want to
         // update, so grabbing the className 'as' property
         value = this.changeFormat(property, value);
@@ -39,12 +42,12 @@ const AddRecipe = createClass({
 
     changeFormat(property, value) {
         if(property === 'directions') {
-            return value.split(',')
+            return value.split(',').map(_.trim);
         }
         if(property === 'ingredients') {
             // return list of objects that are the ingredients for the recipe
             return value.split(',').map((ingredient) => {
-                const [ item, amount ] = ingredient.split(':');
+                const [ item, amount ] = ingredient.split(':').map(_.trim);
                 return {
                     item,
                     amount
@@ -52,7 +55,7 @@ const AddRecipe = createClass({
             })
         }
         // was the name property so just pass through
-        return value;
+        return _.trim(value);
     },
 
     makeDate() {
@@ -66,10 +69,10 @@ const AddRecipe = createClass({
         let { name, directions, ingredients } = this.state;
         let obj = {
             name,
-            created,
             ingredients,
-            directions
-        }
+            directions,
+            created
+        };
         // send to Firebase
         this.ref.push(obj);
         // change to the list view
@@ -78,19 +81,47 @@ const AddRecipe = createClass({
     },
 
     render() {
+        let outputDirections = this.state.directions.map((direction, index) => {
+            return (
+                <li key={index}> {direction}</li>
+            )
+        });
+
+        let outputIngredients = this.state.ingredients.map((ingredient, index) => {
+            return (
+                <li>
+                    <p>Item: {ingredient.item} </p>
+                    <p>Amount: {ingredient.amount} </p>
+                </li>
+            )
+        });
+
         return (
             <div>
-                <form role="form" onSubmit={this.handleSubmit}>
+                <form role="form" className="col span_4_of_8 recipe-input"
+                    onSubmit={this.handleSubmit}>
                     <RecipeInput name="name" update={this.update} />
                     <RecipeInput name="directions" update={this.update} />
                     <RecipeInput name="ingredients" update={this.update} />
-                    <button type="submit" value="submit"> submit</button>
+                    <div className="group"></div>
+                    <div className="col span_1_of_8">
+
+                    </div>
+                    <button className="col span_4_of_8" type="submit" value="submit"> submit</button>
 
                 </form>
-                <pre>
-                    {this.state.name}
-{/*Add in a preview of the recipe to be submitted*/}
-                </pre>
+                <div className="col span_4_of_8 recipe-output">
+                    <p>Name: {this.state.name}</p>
+                    Directions:
+                    <ul>
+                        {outputDirections}
+                    </ul>
+                    Ingredients
+                    <ul>
+                        {outputIngredients}
+                    </ul>
+
+                </div>
 
             </div>
         );

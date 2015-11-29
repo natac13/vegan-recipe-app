@@ -1,6 +1,6 @@
 {
   "name": "natac-recipe-app",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A recipe app I wanted to make for my Mom to store her growing collection of vegan recipes",
   "main": "server.js",
   "scripts": {
@@ -39,6 +39,7 @@
     "file-loader": "^0.8.4",
     "firebase": "^2.3.2",
     "history": "^1.13.1",
+    "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "node-sass": "^3.4.2",
     "path": "^0.12.7",
